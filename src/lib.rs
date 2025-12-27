@@ -15,6 +15,7 @@
 
 // Export all validator modules
 pub mod credit_card;
+pub mod currency;
 pub mod date;
 pub mod email;
 pub mod mobile;
@@ -24,6 +25,7 @@ pub mod url;
 
 // Re-export commonly used validators for convenience
 pub use credit_card::is_valid_credit_card;
+pub use currency::is_currency;
 pub use date::is_valid_date;
 pub use email::is_valid_email;
 pub use mobile::is_valid_phone;

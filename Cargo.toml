@@ -1,8 +1,8 @@
 [package]
 name = "validator-rs"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
-authors = ["Your Name <your.email@example.com>"]
+authors = ["Asnim Ansari <asnimansari@gmail.com>"]
 description = "A comprehensive validation library for Rust providing validators for email, URL, mobile phone numbers (150+ countries), credit cards, strings, numbers, and dates"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/asnimansari/validator-rs"

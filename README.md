@@ -8,6 +8,7 @@ A comprehensive validation library for Rust that provides various validator func
 - **URL Validation**: Validate URLs, HTTPS-only URLs, and domain-specific URLs
 - **Phone Number Validation**: Validate international phone numbers, US phone numbers, and country-code specific validation
 - **Credit Card Validation**: Luhn algorithm validation and card type detection
+- **Currency Validation**: Validate currency strings with extensive customization for different formats worldwide
 - **String Validation**: Alphanumeric, alphabetic, numeric, length, and case validation
 - **Numeric Validation**: Range checking, positive/negative validation, even/odd, multiples
 - **Date/Time Validation**: ISO 8601 date and datetime validation, time validation, leap year checking
@@ -98,6 +99,45 @@ assert_eq!(get_card_type("5425233430109903"), CardType::MasterCard);
 assert_eq!(get_card_type("374245455400126"), CardType::Amex);
 ```
 
+### Currency Validation
+
+```rust
+use validator_rs::currency::{is_currency, CurrencyOptions};
+
+// Default USD format validation
+assert!(is_currency("$10,123.45", None));
+assert!(is_currency("10,123.45", None));
+assert!(is_currency("-$99.99", None));
+
+// Euro format (Italian style)
+let euro_options = CurrencyOptions::new()
+    .symbol("€")
+    .thousands_separator('.')
+    .decimal_separator(',')
+    .allow_space_after_symbol(true);
+assert!(is_currency("€ 1.234,56", Some(euro_options)));
+
+// Chinese Yuan with custom negative sign placement
+let yuan_options = CurrencyOptions::new()
+    .symbol("¥")
+    .negative_sign_before_digits(true);
+assert!(is_currency("¥-1,234.56", Some(yuan_options)));
+
+// Brazilian Real with required symbol
+let real_options = CurrencyOptions::new()
+    .symbol("R$")
+    .require_symbol(true)
+    .allow_space_after_symbol(true)
+    .thousands_separator('.')
+    .decimal_separator(',');
+assert!(is_currency("R$ 1.400,00", Some(real_options)));
+
+// Parentheses for negatives (accounting format)
+let parens_options = CurrencyOptions::new()
+    .parens_for_negatives(true);
+assert!(is_currency("($1,234.56)", Some(parens_options)));
+```
+
 ### String Validation
 
 ```rust
@@ -173,6 +213,7 @@ The library is organized into the following modules:
 - `url` - URL validation functions
 - `mobile` - Mobile phone number validation with locale support (150+ countries)
 - `credit_card` - Credit card validation functions
+- `currency` - Currency string validation with extensive customization
 - `string` - String content and format validation
 - `numeric` - Numeric value validation
 - `date` - Date and time validation functions
@@ -187,6 +228,7 @@ use validator_rs::{
     is_valid_url,
     is_valid_phone,
     is_valid_credit_card,
+    is_currency,
     is_alphanumeric, is_alpha, is_numeric,
     is_in_range, is_positive, is_negative,
     is_valid_date
